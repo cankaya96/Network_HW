@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="374.0" prefWidth="628.0" style="-fx-background-color: #5F021F;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="tombala.FXMLDocumentController">
+    <children>
+        <Button fx:id="button" layoutX="202.0" layoutY="137.0" onAction="#handleButtonAction" prefHeight="51.0" prefWidth="225.0" text="OYUNA BAŞLA" visible="false" />
+        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
+      <ImageView fitHeight="77.0" fitWidth="273.0" layoutX="169.0" layoutY="29.0">
+         <image>
+            <Image url="@../images/cooltext318823100337211.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="button1" layoutX="202.0" layoutY="213.0" onAction="#handleButtonAction" prefHeight="51.0" prefWidth="225.0" text="ÇIKIŞ" visible="false" />
+      <ImageView fitHeight="51.0" fitWidth="51.0" layoutX="280.0" layoutY="239.0">
+         <image>
+            <Image url="@../images/magnifier-tool%20(1).png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="40.0" fitWidth="213.0" layoutX="206.0" layoutY="125.0">
+         <image>
+            <Image url="@../images/cooltext318827560526849.png" />
+         </image>
+      </ImageView>
+    </children>
+</AnchorPane>
