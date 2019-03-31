@@ -70,5 +70,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
+      <Label fx:id="currentNumLabel" layoutX="135.0" layoutY="14.0" prefHeight="51.0" prefWidth="130.0" text="Çıkan Sayı : 15" textFill="WHITE" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Button fx:id="ContinueButton" layoutX="511.0" layoutY="40.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="103.0" text="Devam" visible="false" />
     </children>
 </AnchorPane>

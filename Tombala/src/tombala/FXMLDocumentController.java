@@ -7,12 +7,15 @@ package tombala;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -47,6 +50,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button SecondCinkoB;
     @FXML
+    private Button ContinueButton;
+    @FXML
     private Button TombalaB;
     @FXML
     private Text opponentText;
@@ -54,6 +59,9 @@ public class FXMLDocumentController implements Initializable {
     private GridPane UserPane;
     @FXML
     private GridPane OpponentPane;
+    @FXML
+    private Label currentNumLabel;
+    
     
    
     // Function for control clicks on Start Game button
@@ -65,16 +73,18 @@ public class FXMLDocumentController implements Initializable {
         // Set visibility of object for search opponent page
         loadNewScene("Search");
         
+        // Send request with one seconds for are there any opponent(Infinite Loop)
+        
         loadNewScene("Game");
-        // Each Row
-        for (int i = 0; i < 9; i++) {
-            // Each column
-            for (int j = 0; j < 3; j++) {
-                Label curr = new Label("25");
-                
-                UserPane.add(curr, i, j);
-            }
+        int [] numbersOnCard = new int [12];
+        Random rnd = new Random();
+        for(int i = 0; i < numbersOnCard.length; i++){
+            numbersOnCard[i] = rnd.nextInt(90);
+            System.out.println(numbersOnCard[i]);
         }
+        setNumbersOnCard(numbersOnCard, 0); // Set Numbers for User
+        setNumbersOnCard(numbersOnCard, 1); // Set Numbers for Opponent
+        
     }
     
     // Function for control clicks on Exit Game button
@@ -86,10 +96,51 @@ public class FXMLDocumentController implements Initializable {
     // Function for go back to Main Menu
     @FXML
     private void BackToMenuAction(ActionEvent event) throws IOException {
+        // Clear All Pane
+        Node node = UserPane.getChildren().get(0);
+        UserPane.getChildren().clear();
+        UserPane.getChildren().add(0,node);
+        
+        node = OpponentPane.getChildren().get(0);
+        OpponentPane.getChildren().clear();
+        OpponentPane.getChildren().add(0,node);
+        
         loadNewScene("Main");
     }
     
     // Helper Functions
+    private void controlNumberOnCard(int number){
+        
+    }
+    
+    
+    private void setNumbersOnCard(int[] numbers, int isUser){
+        Random rnd = new Random();
+        ArrayList<Integer> filledPlace = new ArrayList<Integer>();
+        // Each Row
+        for (int i = 0; i < 3; i++) {
+            // Each column
+            filledPlace.clear();
+            for (int j = 0; j < 4; j++) {
+                int numberPlace = rnd.nextInt(9);
+                while(filledPlace.contains(numberPlace)){
+                    numberPlace = rnd.nextInt(9);
+                }
+                filledPlace.add(numberPlace);             
+                Label curr = new Label(String.valueOf(numbers[(i*4) + j]));
+                if(isUser == 0){
+                    UserPane.add(curr, numberPlace, i);
+                    UserPane.setHalignment(curr, javafx.geometry.HPos.CENTER);
+                }else{
+                    OpponentPane.add(curr, numberPlace, i);
+                    OpponentPane.setHalignment(curr, javafx.geometry.HPos.CENTER);
+                }
+                
+            }
+        }
+    }
+    
+    
     private void loadNewScene(String Name) throws IOException{
         
         if(Name.contains("Main")){
@@ -106,6 +157,8 @@ public class FXMLDocumentController implements Initializable {
             UserPane.setVisible(false);
             OpponentPane.setVisible(false);
             gameNameImage.setVisible(true);
+            currentNumLabel.setVisible(false);
+            ContinueButton.setVisible(false);
         }else if (Name.contains("Search")){
             // Set visibility of object for Search page
             startButton.setVisible(false);
@@ -124,12 +177,14 @@ public class FXMLDocumentController implements Initializable {
             UserPane.setVisible(true);
             OpponentPane.setVisible(true);
             gameNameImage.setVisible(false);
+            currentNumLabel.setVisible(true);
+            ContinueButton.setVisible(true);
+            backToMenuB.setVisible(false);
             
         }
         
     }
     
-                
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
