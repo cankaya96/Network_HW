@@ -30,9 +30,33 @@
       
       
       <Button fx:id="backToMenuB" layoutY="337.0" mnemonicParsing="false" onAction="#BackToMenuAction" prefHeight="37.0" prefWidth="81.0" text="Ana Menü" visible="false" />
-      <Button fx:id="FirstCinkoB" layoutX="511.0" layoutY="91.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="103.0" text="1. Çinko !!!" visible="false" />
-      <Button fx:id="SecondCinkoB" layoutX="511.0" layoutY="138.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="103.0" text="2. Çinko !!!" visible="false" />
-      <Button fx:id="TombalaB" layoutX="511.0" layoutY="187.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="103.0" text="Tombalaaa" visible="false" />
+      <Button fx:id="FirstCinkoB" layoutX="511.0" layoutY="91.0" mnemonicParsing="false" onAction="#FirstCinkoAction" prefHeight="37.0" prefWidth="103.0" text="1. Çinko " visible="false">
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="25.0">
+               <image>
+                  <Image url="@../images/imageedit_1_8333038963.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="SecondCinkoB" layoutX="511.0" layoutY="138.0" mnemonicParsing="false" onAction="#SecondCinkoAction" prefHeight="37.0" prefWidth="103.0" text="2. Çinko !!!" visible="false">
+         <graphic>
+            <ImageView fitHeight="23.0" fitWidth="25.0">
+               <image>
+                  <Image url="@../images/imageedit_3_2078919082.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font size="11.0" />
+         </font></Button>
+      <Button fx:id="TombalaB" layoutX="511.0" layoutY="187.0" mnemonicParsing="false" onAction="#TombalaAction" prefHeight="37.0" prefWidth="103.0" text="Tombala" visible="false">
+         <graphic>
+            <ImageView fitHeight="23.0" fitWidth="25.0">
+               <image>
+                  <Image url="@../images/imageedit_5_9004470482.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
       <Text fx:id="opponentText" fill="WHITE" layoutX="472.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rakip" textAlignment="CENTER" visible="false" wrappingWidth="130.0" />
       <GridPane fx:id="UserPane" gridLinesVisible="true" layoutX="32.0" layoutY="80.0" prefHeight="178.0" prefWidth="448.0" style="-fx-background-color: #ffffff;" visible="false">
         <columnConstraints>
@@ -70,10 +94,14 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <Label fx:id="currentNumLabel" layoutX="135.0" layoutY="14.0" prefHeight="51.0" prefWidth="130.0" text="Çıkan Sayı : 15" textFill="WHITE" visible="false">
+      <Label fx:id="currentNumLabel" layoutX="135.0" layoutY="14.0" prefHeight="51.0" prefWidth="130.0" text="Çıkan Sayı : " textFill="WHITE" visible="false">
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Button fx:id="ContinueButton" layoutX="511.0" layoutY="40.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="103.0" text="Devam" visible="false" />
-    </children>
+      <Label fx:id="InfoLabel" layoutX="145.0" layoutY="289.0" prefHeight="62.0" prefWidth="307.0" text="" textFill="WHITE" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      </children>
 </AnchorPane>
