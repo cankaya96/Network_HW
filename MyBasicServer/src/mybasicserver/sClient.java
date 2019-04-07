@@ -5,6 +5,7 @@
  */
 package mybasicserver;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,9 +34,18 @@ public class sClient {
                 while (this.client.socket.isConnected()) {
                     Object rMessage = this.client.cInStream.readObject();
                     String message = rMessage.toString();
+                    
+                    // if one of the client send win message
                     if(message.contains("win")){
                         String clientId = message.split(":")[0];
-                        MyBasicServer.isThereWinner = true;
+                        // if message from first game
+                        if (Integer.parseInt(clientId) < 3){
+                            MyBasicServer.isThereWinner[0] = true;
+                        }
+                        // if message from second game
+                        else{
+                            MyBasicServer.isThereWinner[1] = true;
+                        }
                         MyBasicServer.winnerClientID = clientId;
                     }
                 }

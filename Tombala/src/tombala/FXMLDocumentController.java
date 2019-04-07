@@ -43,6 +43,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javax.swing.JOptionPane;
+import org.controlsfx.control.Notifications;
 
 /**
  *
@@ -79,9 +80,13 @@ public class FXMLDocumentController implements Initializable {
     private GridPane OpponentPane;
     @FXML
     private Label currentNumLabel;
+    @FXML
+    private Label playerID;
+    
     
     MyBasicClient myClient;
-    
+    public boolean firstCinkoCompleted = false;
+    public boolean secondCinkoCompleted = false;
     public static int clientID = -1;
     public static boolean isGameReady = false;
     public static boolean isCardChanged = false;
@@ -93,7 +98,7 @@ public class FXMLDocumentController implements Initializable {
     
     ArrayList<Integer> allNumbers = new ArrayList<Integer>();
    
-    // Function for control clicks on Start Game button
+    // Function for control clicks on Start Game button,
     @FXML
     private void startGameAction(ActionEvent event) throws IOException, InterruptedException, ClassNotFoundException{
         myClient = new MyBasicClient("127.0.0.1", 7000);
@@ -109,8 +114,13 @@ public class FXMLDocumentController implements Initializable {
         
         
         System.out.println("ClientID = " + clientID);
-        // Send request with one seconds for are there any opponent(Infinite Loop)
+        if(clientID % 2 == 0){
+            playerID.setText("2. Oyuncu");
+        }else{
+            playerID.setText("1. Oyuncu"); 
+        }
         
+        // load Game Scene
         loadNewScene("Game");
         
         // Set all cards
@@ -123,6 +133,7 @@ public class FXMLDocumentController implements Initializable {
         @Override
         public void run() {
             Platform.runLater(() -> {
+                // finished situation
                 if(isGameFinished){
                     if(winnerID == clientID){
                         InfoLabel.setText("TEBRİKLER ! KAZANDINIZ.");
@@ -131,6 +142,8 @@ public class FXMLDocumentController implements Initializable {
                     }
                   
                 }
+                
+                // set current number on screen
                 if(currentNumber != 0){
                     currentNumLabel.setText("Çıkan Sayı : " + String.valueOf(currentNumber));
                     isCardChanged = false;
@@ -166,29 +179,34 @@ public class FXMLDocumentController implements Initializable {
         loadNewScene("Main");
     }
     
-    
+    // First Cinko button clicked
     @FXML
     private void FirstCinkoAction(ActionEvent event) throws IOException {
-        if(CinkoNumberControl() == 1){
+        if(CinkoNumberControl() == 1 && !firstCinkoCompleted){
+            firstCinkoCompleted = true;
             if(clientID == 1 || clientID == 2){
-                System.out.println(String.valueOf(clientID) + ". oyuncu birinci çinkoyu tamamladı !");
+                giveAlertMessage(String.valueOf(clientID) + ". oyuncu birinci çinkoyu tamamladı !");
             }
             else{
-                System.out.println(String.valueOf(clientID-2) + ". oyuncu birinci çinkoyu tamamladı !");
+                giveAlertMessage(String.valueOf(clientID-2) + ". oyuncu birinci çinkoyu tamamladı !");
             }
         }
     }
+    // Second Cinko button clicked
     @FXML
     private void SecondCinkoAction(ActionEvent event) throws IOException {
-        if(CinkoNumberControl() == 2){
+        if(CinkoNumberControl() == 2 && !secondCinkoCompleted){
+            secondCinkoCompleted = true;
             if(clientID == 1 || clientID == 2){
-                System.out.println(String.valueOf(clientID) + ". oyuncu ikinci çinkoyu tamamladı !");
+                giveAlertMessage(String.valueOf(clientID) + ". oyuncu ikinci çinkoyu tamamladı !");
             }
             else{
-                System.out.println(String.valueOf(clientID-2) + ". oyuncu ikinci çinkoyu tamamladı !");
+                giveAlertMessage(String.valueOf(clientID-2) + ". oyuncu ikinci çinkoyu tamamladı !");
             }
         }
     }
+    
+    // Tombala button clicked 
     @FXML
     private void TombalaAction(ActionEvent event) throws IOException {
         if(controlTombalaSituation()){
@@ -198,6 +216,7 @@ public class FXMLDocumentController implements Initializable {
     
     
     // Helper Functions
+    // Control is Tombala Situation occurs
     private boolean controlTombalaSituation(){
         // Each Row
         int counter = 0;
@@ -216,6 +235,7 @@ public class FXMLDocumentController implements Initializable {
         
     }
     
+    // Control currentcard on user or opponent card
     private void controlNumberOnCard(int number){
         for(int i = 0; i < myCardNumber.length; i++){
             for(int j = 0; j < myCardNumber[0].length; j++){
@@ -229,6 +249,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
+    // If current number in user card, fill it with rectangle
     private void fillNumberInUserCard(int i, int j){
         Rectangle rectangle = new Rectangle(0, 0, 50, 50);
         rectangle.setFill(Color.RED);
@@ -238,6 +259,7 @@ public class FXMLDocumentController implements Initializable {
         
     }
     
+    // If current number in opponent card, fill it with rectangle
     private void fillNumberInOpponentCard(int i, int j){
         Rectangle rectangle = new Rectangle(0, 0, 15, 20);
         rectangle.setFill(Color.RED);
@@ -247,6 +269,7 @@ public class FXMLDocumentController implements Initializable {
         
     }
     
+    // Set numbers on grid pane for user and opponent
     private void setNumbersOnCard(int[][] numbers, int isUser){
         // Each Row
         for (int i = 0; i < 3; i++) {
@@ -270,15 +293,33 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
+    // Control how many cinko completed
     public int CinkoNumberControl(){
-        
-        
-        return 1;
+        int cinkoCounter = 0;
+        int tempCounter = 0;
+        for(int i=0; i < myCardNumber.length; i++){
+            tempCounter = 0;
+            for(int j=0; j < myCardNumber[0].length; j++){
+                if(allNumbers.contains(myCardNumber[i][j])){
+                    tempCounter += 1;
+                }
+            }
+            // if first and third line completed
+            if(tempCounter == 4 && (i==0 || i==2)){
+                cinkoCounter += 1;
+            }
+            // if second line completed
+            else if(tempCounter == 5 && i == 1){
+                cinkoCounter += 1;
+            }
+        }
+        return cinkoCounter;
         
     }
     
+    // Set visibility of GUI Objects for next page
     private void loadNewScene(String Name) throws IOException, InterruptedException{
-        
+        // if new scene is main
         if(Name.contains("Main")){
             // Set visibility of object for new page
             startButton.setVisible(true);
@@ -295,6 +336,7 @@ public class FXMLDocumentController implements Initializable {
             gameNameImage.setVisible(true);
             currentNumLabel.setVisible(false);
             InfoLabel.setVisible(false);
+            playerID.setVisible(false);
             
         }else if (Name.contains("Search")){
             System.out.println("tombala.FXMLDocumentController.loadNewScene()");
@@ -327,16 +369,19 @@ public class FXMLDocumentController implements Initializable {
             currentNumLabel.setVisible(true);
             InfoLabel.setVisible(true);
             backToMenuB.setVisible(false);
+            playerID.setVisible(true);
             
         }
         
     }
     
+    // Functions for create Alert Box with given text
     public void giveAlertMessage(String Text){
-        Alert alert = new Alert(AlertType.INFORMATION);
-        
-        alert.setHeaderText(Text);
-        alert.showAndWait();
+        Notifications.create()
+              .title("")
+              .text(Text).darkStyle().position(Pos.TOP_CENTER)
+              .showWarning();
+    
     }
     
     @Override

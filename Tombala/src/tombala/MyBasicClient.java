@@ -33,12 +33,14 @@ public class MyBasicClient {
             while (cSocket.isConnected()) {
                 try {
                     message = client.cInStream.readObject().toString();
-                    // If message contains client ID
+                    
                     System.out.println("Message = " + message);
+                    // If message contains client ID
                     if(message.length() == 1){
                         FXMLDocumentController.clientID = Integer.valueOf(message);
                         System.out.println("Message = " + message);
                     }
+                    // If message contains first(user) card information
                     else if(message.contains("fc")){
                         String tmp = message.split(":")[1];
                         String [] array = tmp.split(",");
@@ -50,6 +52,7 @@ public class MyBasicClient {
                             }
                         }
                     }
+                    // If message contains second(opponent) card information
                     else if(message.contains("sc")){
                         String tmp = message.split(":")[1];
                         String [] array = tmp.split(",");
@@ -61,14 +64,17 @@ public class MyBasicClient {
                             }
                         }
                     }
+                    // If message contains start info for client
                     else if(message.contains("start")){
                         System.out.println("Message1 = " + message);
                         FXMLDocumentController.isGameReady = true;
                     }
+                    // If message contains current number info
                     else if(message.contains("num")){
                         FXMLDocumentController.currentNumber = Integer.parseInt(message.split(":")[1]);
                         FXMLDocumentController.isCardChanged = true;
                     }
+                    // If message contains win condition
                     else if(message.contains("win")){
                         FXMLDocumentController.isGameFinished = true;
                         FXMLDocumentController.winnerID = Integer.parseInt(message.split(":")[1]);

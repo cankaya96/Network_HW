@@ -12,7 +12,7 @@ import javax.swing.DefaultListModel;
 
 /**
  *
- * @author INSECT
+ * @author Furkan Cankaya
  */
 public class MyBasicServerGui extends javax.swing.JFrame {
 
